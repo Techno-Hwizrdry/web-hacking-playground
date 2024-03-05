@@ -7,7 +7,6 @@ from functools import wraps
 import re
 import os
 import smtplib
-import random
 import jwt
 from flask import (
     Flask,
@@ -20,6 +19,7 @@ from flask import (
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import check_password_hash
 from werkzeug.middleware.proxy_fix import ProxyFix
+import secrets
 
 app = Flask(__name__)
 
@@ -261,7 +261,7 @@ def sendemail():
 @session_required
 def generateotp(user):
     """Generate OTP"""
-    otp_code = str(random.randint(100000, 999999))
+    otp_code = str(secrets.SystemRandom().randint(100000, 999999))
     db.session.query(User).filter(User.id == user.id).update({User.otp_code: otp_code})
     db.session.commit()
     try:
