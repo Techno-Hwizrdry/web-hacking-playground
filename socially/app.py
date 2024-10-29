@@ -100,8 +100,7 @@ def token_required(func):
                     token,
                     app.config["JWT_SECRET_KEY"],
                     algorithms=["HS256"],
-                    options={"verify_signature": False},
-                )
+                    options={"verify_signature": True})
                 if data["iss"] != ISS:
                     return jsonify({"error": "Invalid token"}), 401
             except jwt.DecodeError:
